@@ -163,22 +163,7 @@ MANPAGER="/usr/bin/less -is"
 export GOPATH=~/.go
 export PATH=$PATH:$GOPATH/bin
 
-#ruby gems
-export PATH="${HOME}/.gem/ruby/1.8/bin:${HOME}/.bin:/var/lib/gems/1.8/bin:${PATH}"
-
-export PATH="${HOME}/.bin:/var/lib/gems/1.9.1/bin:${PATH}"
-
-#rvm
-if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi
-#[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # Load RVM into a shell session *as a function*
-
-#class path
-CLASSPATH="${HOME}/.emacs_setting/ensime/lib/jnotify/jnotify-0.93.jar:${HOME}/.emacs_setting/ensime/lib/scala/scala-library.jar:${HOME}/.emacs_setting/ensime/lib/scala/scala-compiler.jar:${CLASSPATH}"
-
-#android-sdk/tools
-PATH="${HOME}/.lib/android-sdk-linux_x86/tools:${PATH}"
-
-#git用
+#git
 # export GIT_PAGER="lv -c"
 export LV='-z -la -Ou8 -c'
 
@@ -206,38 +191,7 @@ alias apu='sudo aptitude update'
 alias aps='sudo aptitude search'
 alias api='sudo aptitude install'
 
-#chrome
-alias chrome='google-chrome'
-
-#emacs
-function em(){
-		# EMACS=/Applications/MacPorts/EmacsMac.app/Contents/MacOS/Emacs.sh
-		EMACS=/Applications/Emacs.app
-		EMACSCLIENT=/Applications/MacPorts/EmacsMac.app/Contents/MacOS/bin/emacsclient
-		($EMACSCLIENT  -n "$@" 2> /dev/null )  || ( open $EMACS "$@" & )
-    #(emacsclient -n "$@" 2> /dev/null )  || ( emacs "$@" & )
-}
-
-function ce(){
-	 emacs -nw "$@"
-}
-
-
-#クリップボード
-if which pbcopy >/dev/null 2>&1 ; then
-    # Mac
-    alias -g clip='pbcopy'
-elif which xsel >/dev/null 2>&1 ; then
-    # Linux
-    alias -g clip='xsel --input --clipboard'
-elif which putclip >/dev/null 2>&1 ; then
-    # Cygwin
-    alias -g clip='putclip'
-fi
-
-# git
 alias g='git'
-
 alias r='rspec'
 
 ##################
