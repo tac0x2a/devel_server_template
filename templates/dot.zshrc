@@ -151,6 +151,19 @@ zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-colors 'di=34' 'ln=35' 'so=32' 'ex=31' 'bd=46;34' 'cd=43;34'
 
 
+########
+# tmux #
+########
+alias tm='tmux'
+alias ta='tmux attach-session'
+alias tl='tmux list-session'
+
+if [ $SHLVL = 1 ];then
+		tmux
+fi
+
+
+
 ############
 # 環境変数 #
 ############

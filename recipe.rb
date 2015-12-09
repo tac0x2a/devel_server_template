@@ -17,13 +17,13 @@ end
 ############
 # Packages #
 ############
-packages = %W|aptitude emacs zsh ruby git|
+packages = %W|aptitude emacs zsh ruby git tmux|
 packages.each {|p| package p }
 
 ############
 # DotFiles #
 ############
-dot_files = %W|zshrc zshrc.mine gitconfig gitignore_global|
+dot_files = %W|zshrc zshrc.mine gitconfig gitignore_global tmux.conf|
 dot_files.each do |f|
   remote_file "/home/#{USER}/.#{f}" do
     owner "#{USER}"
