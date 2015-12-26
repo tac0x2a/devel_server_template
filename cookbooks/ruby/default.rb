@@ -32,6 +32,7 @@ git "#{RBENV_PATH}/plugins/ruby-build" do
 end
 
 # build
+SH_FILE = '~/.zshrc.mine'
 RBENV='export PATH="$HOME/.rbenv/bin:$PATH" && eval "$(rbenv init -)" && rbenv'
 execute "rbenv install #{RBENV_GLOBAL_VER}" do
   not_if  "#{RBENV} versions | grep '#{RBENV_GLOBAL_VER}'"
@@ -43,4 +44,13 @@ execute "rbenv global #{RBENV_GLOBAL_VER}" do
   only_if "#{RBENV} versions | grep '#{RBENV_GLOBAL_VER}'"
   user    "#{RBENV_USER}"
   command "#{RBENV} global #{RBENV_GLOBAL_VER}"
+end
+
+execute "set rbenv path" do
+  not_if  "grep rbenv '#{SH_FILE}'"
+  user    "#{RBENV_USER}"
+  command <<-COMMAND
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> #{SH_FILE}
+    echo 'eval "$(rbenv init -)"' >> #{SH_FILE}
+  COMMAND
 end
