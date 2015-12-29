@@ -154,13 +154,13 @@ zstyle ':completion:*' list-colors 'di=34' 'ln=35' 'so=32' 'ex=31' 'bd=46;34' 'c
 ########
 # tmux #
 ########
-alias tm='tmux'
-alias ta='tmux attach-session'
-alias tl='tmux list-session'
+# alias tm='tmux'
+# alias ta='tmux attach-session'
+# alias tl='tmux list-session'
 
-if [ $SHLVL = 1 ];then
-		tmux
-fi
+# if [ $SHLVL = 1 ];then
+# 		tmux
+# fi
 
 
 
