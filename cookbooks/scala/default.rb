@@ -7,11 +7,12 @@
 USER="vagrant"
 SH_PROFILE = "~/.zshrc.mine"
 
+JAVA_VERSION  = "java7"
 SCALA_VERSION = "scala-2.11.0"
+SBT_VERSION   = "sbt-0.13.6"
 
 ############ JVM ############
 # Install Java
-JAVA_VERSION = "java7"
 execute "Add Java Repos" do
   not_if  "sudo aptitude search oracle-#{JAVA_VERSION}-installer | grep '^i.*oracle-#{JAVA_VERSION}-installer'"
   user "vagrant"
@@ -43,7 +44,7 @@ execute "Set scalaenv path " do
 end
 
 # Install scala
-execute "install scala" do
+execute "install  #{SCALA_VERSION}" do
   not_if "test -e ${HOME}/.scalaenv/versions/#{SCALA_VERSION}"
   command <<-COMMANDS
     ${HOME}/.scalaenv/bin/scalaenv install #{SCALA_VERSION}
@@ -70,8 +71,7 @@ execute "Set scalaenv path " do
 end
 
 # Install sbt
-SBT_VERSION = "sbt-0.13.9"
-execute "install sbt" do
+execute "install #{SBT_VERSION}" do
   not_if "test -e ${HOME}/.sbtenv/versions/#{SBT_VERSION}"
   command <<-COMMANDS
     ${HOME}/.sbtenv/bin/sbtenv install #{SBT_VERSION}
