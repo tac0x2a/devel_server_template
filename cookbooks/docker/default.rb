@@ -3,35 +3,62 @@
 
 # Author::    TAC (tac@tac42.net)
 
+USER="vagrant"
+
 ##########
 # Docker #
 ##########
-package "docker.io"
-package 'lxc-docker' do
-  action :install
-  options("-y")
+
+###########################
+# Update your apt sources #
+###########################
+execute "add gpg key" do
+  not_if "sudo apt-key list | grep 'Docker Release Tool'"
+  command <<-COMMANDS
+    sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 \
+                     --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+  COMMANDS
+  user "#{USER}"
 end
 
-execute "enable tab-completion of Docker commands in BASH" do
+execute "clean docker source list for 14.04" do
   command <<-COMMANDS
-#!/bin/bash
-source /etc/bash_completion.d/docker.io
-  end
-end
-execute "install apt-transport-https" do
-  command <<-COMMANDS
-[ -e /usr/lib/apt/methods/https ] || {
-  apt-get update
-  apt-get install apt-transport-https
-}
+    sudo echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
   COMMANDS
-  only_if "find /etc/bash_completion.d -name docker.io"
 end
 
-execute "install apt-transport-https" do
+# Verify that apt is pulling from the right repository.
+execute "update source list" do
   command <<-COMMANDS
-sudo sh -c "wget -qO- https://get.docker.io/gpg | apt-key add -"
-sudo sh -c "echo deb http://get.docker.io/ubuntu docker main\ > /etc/apt/sources.list.d/docker.list"
-sudo apt-get update
+    sudo aptitude update
+    sudo apt-cache policy docker-engine
   COMMANDS
+  user "#{USER}"
+end
+
+execute "remove old package" do
+  only_if "sudo aptitude search 'lxc-docker' | grep '^i'"
+  command <<-COMMANDS
+    sudo aptitude purge lxc-docker
+  COMMANDS
+  user "#{USER}"
+end
+
+
+###########
+# Install #
+###########
+package "docker-engine"
+service "docker" do
+  action :start
+end
+
+
+##############
+# SetupGroup #
+##############
+execute "add #{USER} to docker user group" do
+  not_if "id #{USER} | grep docker"
+  command "sudo usermod -aG docker #{USER}"
+  user "#{USER}"
 end
